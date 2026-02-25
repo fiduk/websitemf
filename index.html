@@ -36,7 +36,6 @@
 
     html {
       scroll-behavior: auto;
-      overscroll-behavior-y: none;
     }
 
     body {
@@ -46,7 +45,10 @@
       font-weight: 300;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
-      overscroll-behavior-y: none;
+    }
+
+    @media (max-width: 1024px) {
+      html, body { overscroll-behavior-y: none; }
     }
 
     /* ═══════════════════════════════════════════════
@@ -138,6 +140,29 @@
       100% { transform: translateY(220%); }
     }
 
+    /* sticker */
+    .hero-sticker {
+      position: absolute;
+      top: 8vh; right: -6vw;
+      width: clamp(440px, 56vw, 720px);
+      opacity: 0;
+      transform: rotate(12deg);
+      pointer-events: none;
+      z-index: 0;
+      filter: drop-shadow(0 8px 24px rgba(0,0,0,.5));
+      animation: stickerFloat 5s ease-in-out infinite;
+    }
+    @keyframes stickerFloat {
+      0%,100% { transform: rotate(12deg) translateY(0px); }
+      50%      { transform: rotate(12deg) translateY(-10px); }
+    }
+    @media (max-width: 768px) {
+      .hero-sticker {
+        top: auto; bottom: 18vh; right: 5vw;
+        width: clamp(320px, 88vw, 480px);
+      }
+    }
+
     .hero-eyebrow {
       font-size: .68rem; font-weight: 400;
       letter-spacing: .22em; text-transform: uppercase;
@@ -152,18 +177,21 @@
     }
     #hero-title {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(4.5rem, 17vw, 14rem);
+      font-size: clamp(3rem, 11vw, 10rem);
       font-weight: 900; line-height: .88;
       letter-spacing: -.03em; color: var(--text);
       margin-bottom: 1.7rem;
       overflow: visible;
+      position: relative; z-index: 1;
     }
+    .title-line { display: block; }
     #hero-title .ch { display: inline-block; will-change: transform; }
 
     .hero-sub {
       font-size: clamp(.9rem, 1.8vw, 1.15rem);
       font-weight: 300; letter-spacing: .07em;
       color: var(--t50);
+      position: relative; z-index: 1;
     }
     /* scroll hint */
     .scroll-hint {
@@ -485,7 +513,7 @@
         gap: .4rem; margin-bottom: 1rem;
       }
       #hero-title {
-        font-size: clamp(4rem, 20vw, 7rem);
+        font-size: clamp(2.4rem, 11vw, 5rem);
         margin-bottom: 1.2rem;
       }
       .hero-sub {
@@ -590,6 +618,8 @@
 
   <div class="hero-glow" aria-hidden="true"></div>
 
+  <img src="sticker.webp" class="hero-sticker" id="hero-sticker" alt="" aria-hidden="true" />
+
   <div class="hero-side" aria-hidden="true">
     <span>ГИТР · Продюсер</span>
     <div class="side-track"><div class="side-fill"></div></div>
@@ -599,7 +629,10 @@
     Студентка 2 курса&nbsp;·&nbsp;Продюсерский факультет&nbsp;·&nbsp;ГИТР
   </p>
 
-  <h1 id="hero-title" aria-label="Мария Флоренская">Мария.</h1>
+  <h1 id="hero-title" aria-label="Мария Флоренская">
+    <span class="title-line" id="title-l1">Мария</span>
+    <span class="title-line" id="title-l2">Флоренская.</span>
+  </h1>
 
   <p class="hero-sub" id="hs">
     Продюсер&emsp;·&emsp;Кастинг-директор&emsp;·&emsp;Организатор
@@ -702,7 +735,7 @@
           <div style="position:absolute;bottom:1rem;left:1.2rem;z-index:2;font-family:'Playfair Display',serif;font-size:clamp(1.2rem,3vw,2rem);font-weight:900;font-style:italic;color:rgba(201,168,76,.55);line-height:1;letter-spacing:-.01em;pointer-events:none" aria-hidden="true">Memento Mori</div>
         </div>
         <div class="s-card-body">
-          <div class="roles"><span class="role-tag">Генеральный продюсер</span></div>
+          <div class="roles"><span class="role-tag">Продюсер</span></div>
           <h3 class="s-card-h">"Memento Mori"</h3>
           <p class="s-card-p">Студенческий короткий метр. Полный производственный цикл — от идеи до финального кадра.</p>
         </div>
@@ -737,7 +770,7 @@
           <span class="role-tag">Продюсер</span>
         </div>
         <h3 class="proj-h">«Беспечность»</h3>
-        <p class="proj-p">Студенческий документальный фильм. Режиссёр — Михаил Иванов. Мария Флоренская — продюсер полного производственного цикла.</p>
+        <p class="proj-p">Студенческий документальный фильм. Мария Флоренская — продюсер полного производственного цикла.</p>
         <div style="margin-top:1.4rem;display:flex;align-items:center;gap:.75rem;">
           <span style="font-size:.6rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--t25);">DOC · ГИТР · 2025</span>
         </div>
@@ -776,7 +809,7 @@
           <span class="role-tag">Продюсер</span>
         </div>
         <h3 class="proj-h">«Состояние аффекта»</h3>
-        <p class="proj-p">Студенческая интервью-работа. Режиссёр — Николай Сошников. Мария Флоренская — продюсер полного производственного цикла.</p>
+        <p class="proj-p">Студенческая работа — интервью. Мария Флоренская — продюсер полного производственного цикла.</p>
         <div style="margin-top:1.4rem;display:flex;align-items:center;gap:.75rem;">
           <span style="font-size:.6rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--t25);">INT · ГИТР · 2025</span>
         </div>
@@ -912,8 +945,10 @@ if (IS_DESKTOP) {
   });
 
   lenis.on('scroll', ScrollTrigger.update);
-  gsap.ticker.add(time => lenis.raf(time * 1000));
-  gsap.ticker.lagSmoothing(0);
+  gsap.ticker.add((time) => {
+    lenis.raf(time * 1000);
+  });
+  gsap.ticker.lagSmoothing(0, 0);
 } else {
   /* на мобилках ScrollTrigger слушает нативный скролл */
   ScrollTrigger.normalizeScroll(false);
@@ -958,26 +993,31 @@ function splitChars(el) {
   return el.querySelectorAll('.ch');
 }
 
-const titleEl = document.getElementById('hero-title');
-const chars   = splitChars(titleEl);
+const line1  = document.getElementById('title-l1');
+const line2  = document.getElementById('title-l2');
+const chars1 = splitChars(line1);
+const chars2 = splitChars(line2);
+const chars  = [...chars1, ...chars2];
 
 /* ══════════════════════════════════════════════════
    HERO ENTRANCE ANIMATION
 ══════════════════════════════════════════════════ */
-gsap.set('#nav',  { y: -24, opacity: 0 });
-gsap.set('#he',   { opacity: 0, y: 18 });
-gsap.set(chars,   { y: 130, opacity: 0 });
-gsap.set('#hs',   { opacity: 0, y: 18 });
-gsap.set('#sh',   { opacity: 0, y: 12 });
+gsap.set('#nav',          { y: -24, opacity: 0 });
+gsap.set('#he',           { opacity: 0, y: 18 });
+gsap.set(chars,           { y: 130, opacity: 0 });
+gsap.set('#hs',           { opacity: 0, y: 18 });
+gsap.set('#sh',           { opacity: 0, y: 12 });
+gsap.set('#hero-sticker', { opacity: 0, scale: .6, rotation: 20 });
 
 const heroTL = gsap.timeline({ delay: .15, defaults: { ease: 'power4.out' } });
 
 heroTL
-  .to('#nav',  { y: 0, opacity: 1, duration: .8 },  0)
-  .to('#he',   { opacity: 1, y: 0, duration: .8 },  .22)
-  .to(chars,   { y: 0, opacity: 1, duration: 1.05, stagger: .05 }, .42)
-  .to('#hs',   { opacity: 1, y: 0, duration: .9 },  .95)
-  .to('#sh',   { opacity: 1, y: 0, duration: .7 },  1.38);
+  .to('#nav',          { y: 0, opacity: 1, duration: .8 },  0)
+  .to('#he',           { opacity: 1, y: 0, duration: .8 },  .22)
+  .to(chars,           { y: 0, opacity: 1, duration: 1.05, stagger: .05 }, .42)
+  .to('#hs',           { opacity: 1, y: 0, duration: .9 },  .95)
+  .to('#sh',           { opacity: 1, y: 0, duration: .7 },  1.38)
+  .to('#hero-sticker', { opacity: 1, scale: 1, rotation: 12, duration: .8, ease: 'back.out(1.6)' }, 1.2);
 
 /* ══════════════════════════════════════════════════
    SCROLL FADE-UP (all .fu elements)
