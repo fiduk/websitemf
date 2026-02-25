@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Мария Флоренская — Продюсер · ГИТР</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* ═══════════════════════════════════════════════
+       TOKENS
+    ═══════════════════════════════════════════════ */
+    :root {
+      --bg:      #080808;
+      --gold:    #C9A84C;
+      --gold08:  rgba(201,168,76,.08);
+      --gold10:  rgba(201,168,76,.10);
+      --gold30:  rgba(201,168,76,.30);
+      --text:    #F5F0E8;
+      --t50:     rgba(245,240,232,.50);
+      --t25:     rgba(245,240,232,.25);
+      --t08:     rgba(245,240,232,.08);
+      --t05:     rgba(245,240,232,.05);
+      --card:    #0f0f0f;
+    }
+
+    /* ═══════════════════════════════════════════════
+       RESET & BASE
+    ═══════════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { cursor: none; scroll-behavior: auto; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ═══════════════════════════════════════════════
+       GRAIN
+    ═══════════════════════════════════════════════ */
+    #grain {
+      position: fixed;
+      inset: -50%;
+      width: 200%; height: 200%;
+      opacity: .038;
+      pointer-events: none;
+      z-index: 9990;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      animation: grain .35s steps(1) infinite;
+    }
+    @keyframes grain {
+      0%   { transform: translate( 0,    0); }
+      20%  { transform: translate(-3%,  -5%); }
+      40%  { transform: translate(-6%,   3%); }
+      60%  { transform: translate( 4%,  -2%); }
+      80%  { transform: translate(-1%,   5%); }
+      100% { transform: translate( 2%,  -3%); }
+    }
+
+    /* ═══════════════════════════════════════════════
+       CURSOR
+    ═══════════════════════════════════════════════ */
+    #c-dot {
+      position: fixed;
+      width: 6px; height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      will-change: transform;
+    }
+    #c-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(201,168,76,.45);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      will-change: transform;
+      display: flex; align-items: center; justify-content: center;
+      transition: width .24s cubic-bezier(.16,1,.3,1),
+                  height .24s cubic-bezier(.16,1,.3,1),
+                  background .22s ease,
+                  border-color .22s ease;
+    }
+    #c-ring.big {
+      width: 70px; height: 70px;
+      background: rgba(201,168,76,.07);
+      border-color: var(--gold);
+    }
+    #c-label {
+      font-size: 8px; font-weight: 600;
+      letter-spacing: .13em; text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0; transition: opacity .16s;
+      pointer-events: none; white-space: nowrap;
+    }
+    #c-ring.big #c-label { opacity: 1; }
+
+    @media (pointer: coarse) {
+      #c-dot, #c-ring { display: none !important; }
+      html { cursor: auto; }
+    }
+
+    /* ═══════════════════════════════════════════════
+       NAV
+    ═══════════════════════════════════════════════ */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.75rem 5vw;
+      transition: background .4s, backdrop-filter .4s;
+    }
+    #nav.bg {
+      background: rgba(8,8,8,.88);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem; font-weight: 900;
+      color: var(--gold); text-decoration: none;
+      letter-spacing: -.02em;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: .68rem; font-weight: 500;
+      letter-spacing: .18em; text-transform: uppercase;
+      color: var(--t50); text-decoration: none;
+      transition: color .3s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ═══════════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════════ */
+    #hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 5vw 8vh;
+      overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute; top: -5%; right: -8%;
+      width: 55%; height: 80%;
+      background: radial-gradient(ellipse, rgba(201,168,76,.045) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    /* vertical side annotation */
+    .hero-side {
+      position: absolute; right: 5vw; bottom: 25%;
+      display: flex; flex-direction: column; align-items: center; gap: .65rem;
+    }
+    .hero-side span {
+      font-size: .57rem; font-weight: 500;
+      letter-spacing: .26em; text-transform: uppercase;
+      color: var(--t25); writing-mode: vertical-rl;
+    }
+    .side-track { width: 1px; height: 68px; background: var(--t25); overflow: hidden; }
+    .side-fill  { width: 100%; height: 40%; background: var(--gold); animation: slide 2.3s ease-in-out infinite; }
+
+    @keyframes slide {
+      0%   { transform: translateY(-100%); }
+      55%  { transform: translateY(220%); }
+      100% { transform: translateY(220%); }
+    }
+
+    .hero-eyebrow {
+      font-size: .68rem; font-weight: 400;
+      letter-spacing: .22em; text-transform: uppercase;
+      color: var(--t25);
+      display: flex; align-items: center; gap: .9rem;
+      margin-bottom: 1.3rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block; width: 34px; height: 1px;
+      background: var(--gold); flex-shrink: 0;
+    }
+    #hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(4.5rem, 17vw, 14rem);
+      font-weight: 900; line-height: .88;
+      letter-spacing: -.03em; color: var(--text);
+      margin-bottom: 1.7rem;
+      overflow: visible;
+    }
+    #hero-title .ch { display: inline-block; will-change: transform; }
+
+    .hero-sub {
+      font-size: clamp(.9rem, 1.8vw, 1.15rem);
+      font-weight: 300; letter-spacing: .07em;
+      color: var(--t50);
+    }
+    /* scroll hint */
+    .scroll-hint {
+      position: absolute; bottom: 3.5vh; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: .55rem;
+    }
+    .scroll-hint span {
+      font-size: .57rem; letter-spacing: .22em;
+      text-transform: uppercase; color: var(--t25);
+    }
+    .hint-track { width: 1px; height: 46px; background: var(--t25); overflow: hidden; }
+    .hint-fill  { width: 100%; height: 55%; background: var(--gold); animation: slide 2.6s ease-in-out infinite; }
+
+    /* ═══════════════════════════════════════════════
+       SECTION SHARED
+    ═══════════════════════════════════════════════ */
+    section { padding: 10vh 5vw; }
+
+    .s-eye {
+      font-size: .63rem; font-weight: 500;
+      letter-spacing: .22em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: .65rem;
+    }
+    .s-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4.5vw, 3.8rem);
+      font-weight: 700; line-height: 1.08; color: var(--text);
+    }
+    .s-title em { font-style: italic; color: var(--gold); }
+
+    /* ═══════════════════════════════════════════════
+       PROJECTS
+    ═══════════════════════════════════════════════ */
+    .proj-list { display: flex; flex-direction: column; gap: 7rem; }
+
+    .proj-row {
+      display: grid;
+      gap: 3rem;
+      align-items: center;
+    }
+    .proj-row.v-l  { grid-template-columns: 3fr 2fr; }
+    .proj-row.v-r  { grid-template-columns: 2fr 3fr; }
+    .proj-row.pair { grid-template-columns: 1fr 1fr; align-items: start; gap: 2rem; }
+
+    .proj-num {
+      font-size: .6rem; font-weight: 400;
+      letter-spacing: .22em; color: var(--t25); margin-bottom: .35rem;
+    }
+    .roles { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1rem; }
+    .role-tag {
+      font-size: .6rem; font-weight: 500;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--gold); border: 1px solid var(--gold30);
+      padding: .26rem .7rem; border-radius: 100px;
+    }
+    .proj-h {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 2.6vw, 2.2rem);
+      font-weight: 700; line-height: 1.14; color: var(--text);
+      margin-bottom: .8rem;
+    }
+    .proj-p {
+      font-size: .87rem; line-height: 1.75; color: var(--t50); max-width: 38ch;
+    }
+
+    /* video embed */
+    .vid {
+      position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+      border-radius: 14px;
+      box-shadow:
+        0 0 0 1px var(--gold10),
+        0 40px 80px rgba(0,0,0,.65),
+        0 0 60px rgba(201,168,76,.05);
+    }
+    .vid iframe {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%; border: 0; border-radius: 14px;
+    }
+
+    /* kinopoisk card */
+    .kp-card {
+      aspect-ratio: 16/9; border-radius: 14px;
+      overflow: hidden; position: relative;
+      background: #000;
+      box-shadow: 0 0 0 1px var(--gold10), 0 40px 80px rgba(0,0,0,.6);
+      display: flex; align-items: flex-end; justify-content: center;
+    }
+    .kp-inner { text-align: center; padding: 2rem; position: relative; z-index: 1; }
+    .kp-badge {
+      font-size: .57rem; font-weight: 600; letter-spacing: .32em;
+      text-transform: uppercase; color: rgba(201,168,76,.45); margin-bottom: .85rem;
+    }
+    .kp-film {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 900; color: var(--text); line-height: 1; margin-bottom: .45rem;
+    }
+    .kp-credit { font-size: .72rem; color: var(--t25); letter-spacing: .1em; }
+
+    /* stacked cards (proj 3 & 4) */
+    .s-card {
+      border-radius: 14px; overflow: hidden;
+      background: var(--card); border: 1px solid var(--t08);
+    }
+    .s-card-thumb {
+      aspect-ratio: 16/9; position: relative;
+      display: flex; align-items: center; justify-content: center; overflow: hidden;
+    }
+    .s-card-body { padding: 1.75rem; }
+    .s-card-h {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem; font-weight: 700; line-height: 1.2;
+      color: var(--text); margin-bottom: .5rem;
+    }
+    .s-card-p { font-size: .8rem; line-height: 1.65; color: var(--t50); }
+
+    /* html5 video player — same look as iframe embed */
+    .vid-local {
+      position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+      border-radius: 14px;
+      box-shadow:
+        0 0 0 1px var(--gold10),
+        0 40px 80px rgba(0,0,0,.65),
+        0 0 60px rgba(201,168,76,.05);
+    }
+    .vid-local video {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%;
+      border-radius: 14px; object-fit: cover;
+      background: #000;
+    }
+    /* custom controls tint */
+    .vid-local video::-webkit-media-controls-panel {
+      background: linear-gradient(to top, rgba(8,8,8,.85), transparent);
+    }
+
+    /* button */
+    .btn {
+      display: inline-flex; align-items: center; gap: .55rem;
+      background: var(--gold); color: #080808;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: .7rem; font-weight: 600;
+      letter-spacing: .12em; text-transform: uppercase;
+      text-decoration: none; padding: .85rem 1.75rem;
+      border-radius: 100px; margin-top: 1.8rem;
+      transition: transform .3s cubic-bezier(.16,1,.3,1), box-shadow .3s;
+    }
+    .btn:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(201,168,76,.28); }
+
+    /* ═══════════════════════════════════════════════
+       TIMELINE
+    ═══════════════════════════════════════════════ */
+    .tl-wrap {
+      position: relative;
+      max-width: 860px; margin: 0 auto;
+    }
+    .tl-axis {
+      position: absolute; left: 50%; top: 0; bottom: 0;
+      width: 1px; background: rgba(201,168,76,.10);
+      transform: translateX(-50%);
+    }
+    .tl-prog {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 0%;
+      background: linear-gradient(to bottom, var(--gold), rgba(201,168,76,.12));
+    }
+    .tl-list { display: flex; flex-direction: column; gap: 4.5rem; padding: 1rem 0; }
+    .tl-row { display: grid; grid-template-columns: 1fr 22px 1fr; gap: 2rem; align-items: center; }
+    .tl-dot {
+      width: 10px; height: 10px;
+      background: var(--gold); border-radius: 50%;
+      box-shadow: 0 0 14px rgba(201,168,76,.7);
+      justify-self: center;
+      transform: scale(0); opacity: 0;
+    }
+    .tl-card {
+      background: var(--card); border: 1px solid var(--t08);
+      border-radius: 10px; padding: 1.6rem;
+    }
+    .tl-card.ghost { background: transparent; border: none; }
+    .tl-year {
+      font-size: .6rem; font-weight: 500;
+      letter-spacing: .2em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: .32rem;
+    }
+    .tl-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem; font-weight: 700;
+      color: var(--text); margin-bottom: .42rem; line-height: 1.3;
+    }
+    .tl-desc { font-size: .78rem; line-height: 1.62; color: var(--t50); }
+
+    /* ═══════════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════════ */
+    #footer {
+      min-height: 100svh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 8vh 5vw;
+      position: relative; overflow: hidden;
+      border-top: 1px solid var(--t05);
+    }
+    .footer-glow {
+      position: absolute; bottom: -15%; left: 50%;
+      transform: translateX(-50%);
+      width: 60%; height: 50%;
+      background: radial-gradient(ellipse, rgba(201,168,76,.04) 0%, transparent 68%);
+      pointer-events: none;
+    }
+    .footer-h {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 7vw, 7.5rem);
+      font-weight: 900; line-height: .96;
+      letter-spacing: -.025em; color: var(--text);
+      margin-bottom: 2rem; position: relative; z-index: 1;
+    }
+    .footer-h em { font-style: italic; color: var(--gold); }
+    .footer-sub {
+      font-size: .66rem; letter-spacing: .25em;
+      text-transform: uppercase; color: var(--t25);
+      margin-bottom: 3.5rem;
+    }
+    .socials { display: flex; gap: 2.5rem; margin-bottom: 4rem; align-items: center; }
+    .soc {
+      display: flex; align-items: center; gap: .5rem;
+      font-size: .7rem; font-weight: 500;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--t50); text-decoration: none;
+      transition: color .3s;
+    }
+    .soc:hover { color: var(--gold); }
+    .footer-copy { font-size: .6rem; letter-spacing: .1em; color: var(--t25); }
+
+    /* ═══════════════════════════════════════════════
+       UTILS
+    ═══════════════════════════════════════════════ */
+    .hr { width: 100%; height: 1px; background: var(--t05); }
+    .fu  { opacity: 0; transform: translateY(50px); }
+
+    /* section header spacing */
+    .s-hdr { margin-bottom: 4.5rem; }
+    .s-hdr-center { margin-bottom: 5rem; text-align: center; }
+
+    /* ═══════════════════════════════════════════════
+       HAMBURGER BUTTON
+    ═══════════════════════════════════════════════ */
+    #hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none; border: none;
+      cursor: pointer; padding: 8px;
+      z-index: 101; position: relative;
+    }
+    .ham-line {
+      width: 22px; height: 1.5px;
+      background: var(--text); display: block;
+      transform-origin: center;
+      transition: background .3s;
+    }
+
+    /* ═══════════════════════════════════════════════
+       MOBILE MENU OVERLAY
+    ═══════════════════════════════════════════════ */
+    #mobile-menu {
+      position: fixed; inset: 0;
+      background: #080808;
+      z-index: 98;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      pointer-events: none; opacity: 0;
+    }
+    #mobile-menu.open { pointer-events: all; }
+    .mob-nav {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 2.2rem;
+    }
+    .mob-nav a {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 9vw, 3.8rem);
+      font-weight: 700; color: var(--text);
+      text-decoration: none; letter-spacing: -.01em;
+      opacity: 0; transform: translateY(28px);
+      display: block;
+    }
+    .mob-nav a em { font-style: normal; color: var(--gold); }
+    .mob-hint {
+      position: absolute; bottom: 2.5rem;
+      font-size: .58rem; letter-spacing: .22em;
+      text-transform: uppercase; color: var(--t25);
+    }
+
+    /* ═══════════════════════════════════════════════
+       RESPONSIVE — TABLET (≤ 900px)
+    ═══════════════════════════════════════════════ */
+    @media (max-width: 900px) {
+      .proj-row.v-l, .proj-row.v-r { grid-template-columns: 1fr; }
+      .proj-row.pair { grid-template-columns: 1fr; gap: 1.5rem; }
+    }
+
+    /* ═══════════════════════════════════════════════
+       RESPONSIVE — MOBILE (≤ 768px)
+    ═══════════════════════════════════════════════ */
+    @media (max-width: 768px) {
+      /* Nav */
+      #nav { padding: 1.1rem 5vw; }
+      .nav-links { display: none; }
+      #hamburger { display: flex; }
+
+      /* Hero */
+      #hero { padding: 0 6vw 10vh; }
+      .hero-side { display: none; }
+      .hero-eyebrow {
+        font-size: .58rem;
+        flex-wrap: wrap; line-height: 1.7;
+        gap: .4rem; margin-bottom: 1rem;
+      }
+      #hero-title {
+        font-size: clamp(4rem, 20vw, 7rem);
+        margin-bottom: 1.2rem;
+      }
+      .hero-sub {
+        font-size: clamp(.85rem, 3.8vw, 1.05rem);
+        line-height: 1.65; letter-spacing: .03em;
+      }
+      .scroll-hint { bottom: 2.5vh; }
+
+      /* Sections */
+      section { padding: 7vh 6vw; }
+      .s-hdr { margin-bottom: 2.8rem; }
+      .s-hdr-center { margin-bottom: 3rem; }
+      .s-title { font-size: clamp(1.8rem, 7vw, 2.8rem); }
+
+      /* Projects */
+      .proj-list { gap: 4rem; }
+      .proj-p { max-width: 100%; }
+      .proj-h { font-size: clamp(1.4rem, 5.5vw, 2rem); }
+      /* убираем асимметричный отступ у карточки протезов */
+      .proj-row.pair > *:last-child { margin-top: 0 !important; }
+
+      /* Credit block inside proj-2 */
+      [style*="border-left:2px solid var(--gold)"] {
+        margin-top: 1.1rem;
+      }
+
+      /* Timeline — переключаем на левостороннюю линию */
+      .tl-wrap { padding-left: 28px; }
+      .tl-axis {
+        left: 0; transform: none;
+      }
+      .tl-list { gap: 2.2rem; }
+      .tl-row {
+        display: flex; flex-direction: row;
+        gap: 1rem; align-items: flex-start;
+      }
+      .tl-card.ghost { display: none; }
+      .tl-dot {
+        order: -1; flex-shrink: 0;
+        margin-top: .6rem;
+        position: relative; left: -23px;
+      }
+      .tl-card:not(.ghost) { flex: 1; }
+      .tl-card { padding: 1.2rem; }
+
+      /* Footer */
+      #footer { min-height: 80svh; padding: 10vh 6vw; }
+      .footer-h {
+        font-size: clamp(2rem, 10.5vw, 3.2rem);
+        margin-bottom: 1.5rem;
+      }
+      .footer-sub { margin-bottom: 2.5rem; }
+      .socials { margin-bottom: 2.5rem; }
+    }
+
+    /* ═══════════════════════════════════════════════
+       RESPONSIVE — SMALL PHONES (≤ 430px)
+    ═══════════════════════════════════════════════ */
+    @media (max-width: 430px) {
+      #hero-title { font-size: clamp(3.6rem, 21vw, 6rem); }
+      .proj-h { font-size: clamp(1.3rem, 5.5vw, 1.7rem); }
+      .s-card-body { padding: 1.2rem; }
+      .s-card-h { font-size: 1.15rem; }
+      .btn { font-size: .65rem; padding: .8rem 1.5rem; }
+      .kp-film { font-size: clamp(1.6rem, 7vw, 2.5rem); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- GRAIN -->
+<div id="grain" aria-hidden="true"></div>
+
+<!-- CURSOR -->
+<div id="c-dot"  aria-hidden="true"></div>
+<div id="c-ring" aria-hidden="true"><span id="c-label"></span></div>
+
+<!-- ══════════════════════ NAV ══════════════════════ -->
+<nav id="nav" role="navigation" aria-label="Главная навигация">
+  <a href="#hero" class="nav-logo" data-hover="">M.</a>
+  <ul class="nav-links">
+    <li><a href="#projects" data-hover="">Проекты</a></li>
+    <li><a href="#experience" data-hover="">Опыт</a></li>
+    <li><a href="#footer" data-hover="">Контакт</a></li>
+  </ul>
+  <button id="hamburger" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-menu">
+    <span class="ham-line"></span>
+    <span class="ham-line"></span>
+    <span class="ham-line"></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU OVERLAY -->
+<div id="mobile-menu" role="dialog" aria-label="Мобильное меню" aria-hidden="true">
+  <nav class="mob-nav">
+    <a href="#projects">Проекты</a>
+    <a href="#experience">Опыт &amp; <em>Фестивали</em></a>
+    <a href="#footer">Контакт</a>
+  </nav>
+  <p class="mob-hint">Нажми ещё раз, чтобы закрыть</p>
+</div>
+
+<!-- ══════════════════════ HERO ══════════════════════ -->
+<section id="hero" aria-label="Главный экран">
+
+  <div class="hero-glow" aria-hidden="true"></div>
+
+  <div class="hero-side" aria-hidden="true">
+    <span>ГИТР · Продюсер</span>
+    <div class="side-track"><div class="side-fill"></div></div>
+  </div>
+
+  <p class="hero-eyebrow" id="he">
+    Студентка 2 курса&nbsp;·&nbsp;Продюсерский факультет&nbsp;·&nbsp;ГИТР
+  </p>
+
+  <h1 id="hero-title" aria-label="Мария Флоренская">Мария.</h1>
+
+  <p class="hero-sub" id="hs">
+    Продюсер&emsp;·&emsp;Кастинг-директор&emsp;·&emsp;Организатор
+  </p>
+
+  <div class="scroll-hint" id="sh" aria-hidden="true">
+    <span>Scroll</span>
+    <div class="hint-track"><div class="hint-fill"></div></div>
+  </div>
+
+</section>
+
+<!-- ══════════════════════ PROJECTS ══════════════════════ -->
+<section id="projects" aria-label="Проекты">
+
+  <div class="s-hdr">
+    <p class="s-eye fu">01 — Фильмография</p>
+    <h2 class="s-title fu">Избранные<br><em>работы</em></h2>
+  </div>
+
+  <div class="proj-list">
+
+    <!-- ── Проект 1: Короткий метр с Гилёвым (Дзен) ── -->
+    <div class="proj-row v-l fu">
+      <div class="vid" data-hover="PLAY">
+        <iframe
+          src="https://dzen.ru/video/watch/68943e000251cb27748ecacc"
+          title="Короткий метр с Сергеем Гилёвым"
+          allow="autoplay; fullscreen"
+          allowfullscreen
+          loading="lazy"
+        ></iframe>
+      </div>
+      <div>
+        <p class="proj-num">Проект 01</p>
+        <div class="roles">
+          <span class="role-tag">Продюсер</span>
+          <span class="role-tag">Кастинг-директор</span>
+          <span class="role-tag">Ассистент по актёрам</span>
+        </div>
+        <h3 class="proj-h">Короткий метр<br>с Сергеем Гилёвым</h3>
+        <p class="proj-p">Дипломная работа. Серьёзный проект с участием актёра большого кино — полный производственный цикл от кастинга до финального монтажа.</p>
+      </div>
+    </div>
+
+    <!-- ── Проект 2: Вдохновители (Кинопоиск) ── -->
+    <div class="proj-row v-r fu">
+      <div>
+        <p class="proj-num">Проект 02</p>
+        <div class="roles">
+          <span class="role-tag">Ассистент продюсера</span>
+        </div>
+        <h3 class="proj-h">Продюсерский центр<br>«Вдохновители»</h3>
+        <p class="proj-p">Профессиональное производство с командой опытных кинематографистов.</p>
+
+        <!-- credit line — стиль как в реальных титрах -->
+        <div style="margin-top:1.4rem;padding:1rem 1.2rem;border-left:2px solid var(--gold);background:rgba(201,168,76,.04);">
+          <p style="font-size:.6rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:.35rem;">В финальных титрах</p>
+          <p style="font-family:'Playfair Display',serif;font-size:clamp(1rem,1.8vw,1.25rem);font-weight:700;color:var(--text);line-height:1.2;">Ассистент продюсера —<br>Мария Флоренская</p>
+        </div>
+
+        <a href="https://www.kinopoisk.ru/film/8176918/" target="_blank" rel="noopener" class="btn" data-hover="VIEW">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+            <polyline points="15 3 21 3 21 9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+          Смотреть на Кинопоиске
+        </a>
+      </div>
+      <div class="kp-card" data-hover="VIEW" style="background:#000;">
+        <!-- credits screenshot — только фото, без надписей поверх -->
+        <img
+          src="vdohnoviteli-credits.png"
+          alt="Титры Вдохновители — Мария Флоренская"
+          style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;opacity:.9;border-radius:14px;"
+        />
+        <!-- лёгкая виньетка по краям для красоты -->
+        <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 55%,rgba(8,8,8,.7) 100%);border-radius:14px;pointer-events:none" aria-hidden="true"></div>
+      </div>
+    </div>
+
+    <!-- ── Проекты 3 & 4: пара ── -->
+    <div class="proj-row pair">
+
+      <!-- Memento Mori -->
+      <div class="s-card fu">
+        <div class="s-card-thumb" style="background:#000;">
+          <!-- photo collage: 1 large left + 2x2 right -->
+          <div style="position:absolute;inset:0;display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:2px;">
+            <img src="memento%20mori/IMG_8083.JPG"               alt="" style="grid-row:1/3;width:100%;height:100%;object-fit:cover;display:block;">
+            <img src="memento%20mori/IMG_8093.JPG"               alt="" style="width:100%;height:100%;object-fit:cover;display:block;">
+            <img src="memento%20mori/IMG_8253.JPG"               alt="" style="width:100%;height:100%;object-fit:cover;display:block;">
+            <img src="memento%20mori/IMG_8459.JPG"               alt="" style="width:100%;height:100%;object-fit:cover;display:block;">
+            <img src="memento%20mori/photo_2025-05-31_19-19-47.jpg" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">
+          </div>
+          <!-- dark overlay + italic title overlay -->
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,.82) 0%,rgba(8,8,8,.15) 55%,rgba(8,8,8,.35) 100%);pointer-events:none" aria-hidden="true"></div>
+          <div style="position:absolute;bottom:1rem;left:1.2rem;z-index:2;font-family:'Playfair Display',serif;font-size:clamp(1.2rem,3vw,2rem);font-weight:900;font-style:italic;color:rgba(201,168,76,.55);line-height:1;letter-spacing:-.01em;pointer-events:none" aria-hidden="true">Memento Mori</div>
+        </div>
+        <div class="s-card-body">
+          <div class="roles"><span class="role-tag">Генеральный продюсер</span></div>
+          <h3 class="s-card-h">"Memento Mori"</h3>
+          <p class="s-card-p">Студенческий короткий метр. Полный производственный цикл — от идеи до финального кадра.</p>
+        </div>
+      </div>
+
+      <!-- Бионические протезы -->
+      <div class="s-card fu" style="margin-top:3.5rem">
+        <div class="s-card-thumb" style="background:#000;">
+          <!-- photo collage: 1 large left + 2 stacked right -->
+          <div style="position:absolute;inset:0;display:grid;grid-template-columns:3fr 2fr;grid-template-rows:1fr 1fr;gap:2px;">
+            <img src="protez/IMG_8534.JPG" alt="" style="grid-row:1/3;width:100%;height:100%;object-fit:cover;display:block;">
+            <img src="protez/IMG_8568.JPG" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">
+            <img src="protez/IMG_8687.JPG" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">
+          </div>
+          <!-- dark overlay -->
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,.82) 0%,rgba(8,8,8,.1) 55%,rgba(8,8,8,.3) 100%);pointer-events:none" aria-hidden="true"></div>
+        </div>
+        <div class="s-card-body">
+          <div class="roles"><span class="role-tag">Продюсер</span></div>
+          <h3 class="s-card-h">Сюжет про<br>бионические протезы</h3>
+          <p class="s-card-p">Студенческая работа. Журналистский репортаж о передовых технологиях — продюсирование и организация съёмок.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Беспечность (локальное видео) ── -->
+    <div class="proj-row v-r fu">
+      <div>
+        <p class="proj-num">Проект 04</p>
+        <div class="roles">
+          <span class="role-tag">Продюсер</span>
+        </div>
+        <h3 class="proj-h">«Беспечность»</h3>
+        <p class="proj-p">Студенческий документальный фильм. Режиссёр — Михаил Иванов. Мария Флоренская — продюсер полного производственного цикла.</p>
+        <div style="margin-top:1.4rem;display:flex;align-items:center;gap:.75rem;">
+          <span style="font-size:.6rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--t25);">DOC · ГИТР · 2025</span>
+        </div>
+      </div>
+      <div class="vid-local" data-hover="PLAY">
+        <video
+          controls
+          preload="metadata"
+          playsinline
+          title="Беспечность — документальный фильм, 2025"
+        >
+          <source src="videos/DS21_Ivanov_Michael_Bespechnost_DOC_2025.mov" type="video/mp4">
+          <source src="videos/DS21_Ivanov_Michael_Bespechnost_DOC_2025.mov" type="video/quicktime">
+          Ваш браузер не поддерживает воспроизведение видео.
+        </video>
+      </div>
+    </div>
+
+    <!-- ── Состояние аффекта (локальное видео) ── -->
+    <div class="proj-row v-l fu">
+      <div class="vid-local" data-hover="PLAY">
+        <video
+          controls
+          preload="metadata"
+          playsinline
+          title="Состояние аффекта — интервью, 2025"
+        >
+          <source src="videos/DO12_Soshnikov_Nikolay_INT_Sostouanye_affeckta_2025.mov" type="video/mp4">
+          <source src="videos/DO12_Soshnikov_Nikolay_INT_Sostouanye_affeckta_2025.mov" type="video/quicktime">
+          Ваш браузер не поддерживает воспроизведение видео.
+        </video>
+      </div>
+      <div>
+        <p class="proj-num">Проект 05</p>
+        <div class="roles">
+          <span class="role-tag">Продюсер</span>
+        </div>
+        <h3 class="proj-h">«Состояние аффекта»</h3>
+        <p class="proj-p">Студенческая интервью-работа. Режиссёр — Николай Сошников. Мария Флоренская — продюсер полного производственного цикла.</p>
+        <div style="margin-top:1.4rem;display:flex;align-items:center;gap:.75rem;">
+          <span style="font-size:.6rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--t25);">INT · ГИТР · 2025</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Проект 5: VK Видео ── -->
+    <div class="proj-row v-l fu">
+      <div class="vid" data-hover="PLAY">
+        <iframe
+          src="https://vk.com/video_ext.php?oid=-170804489&id=456239046&hd=2"
+          title="Видеопроект — VK Видео"
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowfullscreen
+          loading="lazy"
+        ></iframe>
+      </div>
+      <div>
+        <p class="proj-num">Проект 06</p>
+        <div class="roles">
+          <span class="role-tag">Helper</span>
+        </div>
+        <h3 class="proj-h">Клип «Бабушки»<br>— Андрей Минеев</h3>
+        <p class="proj-p">Музыкальный клип на песню «Бабушки» Андрея Минеева. Участие в производстве в роли хелпера.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="hr"></div>
+
+<!-- ══════════════════════ TIMELINE ══════════════════════ -->
+<section id="experience" aria-label="Опыт и фестивали">
+
+  <div class="s-hdr-center">
+    <p class="s-eye fu">02 — Опыт</p>
+    <h2 class="s-title fu">Фестивали &amp;<br><em>стажировки</em></h2>
+  </div>
+
+  <div class="tl-wrap" id="tl-wrap">
+    <div class="tl-axis">
+      <div class="tl-prog" id="tl-prog"></div>
+    </div>
+
+    <div class="tl-list">
+
+      <!-- Театр Три ступени -->
+      <div class="tl-row">
+        <div class="tl-card fu">
+          <p class="tl-year">Стажировка</p>
+          <h3 class="tl-name">Театр «Три ступени»</h3>
+          <p class="tl-desc">Работа с актёрским составом, организация репетиций, поддержка постановочного процесса и взаимодействие с творческой командой театра.</p>
+        </div>
+        <div class="tl-dot"></div>
+        <div class="tl-card ghost"></div>
+      </div>
+
+      <!-- La Boheme Cinema -->
+      <div class="tl-row">
+        <div class="tl-card ghost"></div>
+        <div class="tl-dot"></div>
+        <div class="tl-card fu">
+          <p class="tl-year">2025</p>
+          <h3 class="tl-name">La Boheme Cinema</h3>
+          <p class="tl-desc">Международный кинофестиваль. Организационный комитет — координация мероприятий, взаимодействие с участниками и международными гостями фестиваля.</p>
+        </div>
+      </div>
+
+      <!-- Телемания -->
+      <div class="tl-row">
+        <div class="tl-card fu">
+          <p class="tl-year">2025</p>
+          <h3 class="tl-name">Фестиваль «Телемания»</h3>
+          <p class="tl-desc">Фестиваль ГИТР в телецентре Останкино. Организационный комитет одного из крупнейших студенческих медиафестивалей страны.</p>
+        </div>
+        <div class="tl-dot"></div>
+        <div class="tl-card ghost"></div>
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+<div class="hr"></div>
+
+<!-- ══════════════════════ FOOTER ══════════════════════ -->
+<footer id="footer" aria-label="Контакты">
+
+  <div class="footer-glow" aria-hidden="true"></div>
+
+  <h2 class="footer-h" id="footer-h">
+    Let's create<br><em>something</em><br>together.
+  </h2>
+
+  <p class="footer-sub">Открыта для новых проектов</p>
+
+  <nav class="socials" aria-label="Социальные сети">
+
+    <a href="https://t.me/mariaflv" target="_blank" rel="noopener" class="soc" aria-label="Telegram" data-hover="TG">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8l-1.69 7.96c-.12.58-.46.72-.93.45l-2.54-1.87-1.22 1.18c-.14.14-.25.25-.51.25l.18-2.56 4.65-4.2c.2-.18-.04-.28-.31-.1L7.69 14.4l-2.49-.77c-.54-.17-.55-.54.12-.8l9.73-3.75c.45-.17.84.1.69.72z"/>
+      </svg>
+      @mariaflv
+    </a>
+
+  </nav>
+
+  <p class="footer-copy">© 2025 Мария Флоренская &emsp;·&emsp; Продюсерский факультет ГИТР</p>
+
+</footer>
+
+<!-- ══════════════════════ SCRIPTS ══════════════════════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+<script>
+/* ══════════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════════ */
+gsap.registerPlugin(ScrollTrigger);
+
+/* ── Lenis smooth scroll ── */
+const lenis = new Lenis({
+  duration: 1.4,
+  easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+});
+
+lenis.on('scroll', ScrollTrigger.update);
+
+gsap.ticker.add(time => lenis.raf(time * 1000));
+gsap.ticker.lagSmoothing(0);
+
+/* ── Nav scroll class ── */
+ScrollTrigger.create({
+  start: 'top -120',
+  onUpdate: self => {
+    document.getElementById('nav').classList.toggle('bg', self.scroll() > 120);
+  }
+});
+
+/* ── Smooth anchor navigation ── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); lenis.scrollTo(target, { offset: -90 }); }
+  });
+});
+
+/* ══════════════════════════════════════════════════
+   CUSTOM CURSOR
+══════════════════════════════════════════════════ */
+const dot    = document.getElementById('c-dot');
+const ring   = document.getElementById('c-ring');
+const clabel = document.getElementById('c-label');
+
+// Center both elements via GSAP (avoids CSS transform conflict)
+gsap.set([dot, ring], { xPercent: -50, yPercent: -50 });
+
+const toDotX  = gsap.quickTo(dot,  'x', { duration: .07,  ease: 'power3' });
+const toDotY  = gsap.quickTo(dot,  'y', { duration: .07,  ease: 'power3' });
+const toRingX = gsap.quickTo(ring, 'x', { duration: .28,  ease: 'power2' });
+const toRingY = gsap.quickTo(ring, 'y', { duration: .28,  ease: 'power2' });
+
+window.addEventListener('mousemove', e => {
+  toDotX(e.clientX);  toDotY(e.clientY);
+  toRingX(e.clientX); toRingY(e.clientY);
+});
+
+// Add data-hover to local video containers
+document.querySelectorAll('.vid-local').forEach(el => {
+  if (!el.dataset.hover) el.dataset.hover = 'PLAY';
+});
+
+// Elements with explicit data-hover labels
+document.querySelectorAll('[data-hover]').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    ring.classList.add('big');
+    clabel.textContent = el.dataset.hover;
+  });
+  el.addEventListener('mouseleave', () => {
+    ring.classList.remove('big');
+    clabel.textContent = '';
+  });
+});
+
+/* ══════════════════════════════════════════════════
+   SPLIT HERO TITLE
+══════════════════════════════════════════════════ */
+function splitChars(el) {
+  const raw = el.innerText.trim();
+  el.innerHTML = raw.split('').map((ch, i, arr) => {
+    const isGoldDot = (ch === '.' && i === arr.length - 1);
+    const style = isGoldDot
+      ? 'display:inline-block;will-change:transform;color:var(--gold)'
+      : 'display:inline-block;will-change:transform';
+    return `<span class="ch" style="${style}">${ch === ' ' ? '&nbsp;' : ch}</span>`;
+  }).join('');
+  return el.querySelectorAll('.ch');
+}
+
+const titleEl = document.getElementById('hero-title');
+const chars   = splitChars(titleEl);
+
+/* ══════════════════════════════════════════════════
+   HERO ENTRANCE ANIMATION
+══════════════════════════════════════════════════ */
+gsap.set('#nav',  { y: -24, opacity: 0 });
+gsap.set('#he',   { opacity: 0, y: 18 });
+gsap.set(chars,   { y: 130, opacity: 0 });
+gsap.set('#hs',   { opacity: 0, y: 18 });
+gsap.set('#sh',   { opacity: 0, y: 12 });
+
+const heroTL = gsap.timeline({ delay: .15, defaults: { ease: 'power4.out' } });
+
+heroTL
+  .to('#nav',  { y: 0, opacity: 1, duration: .8 },  0)
+  .to('#he',   { opacity: 1, y: 0, duration: .8 },  .22)
+  .to(chars,   { y: 0, opacity: 1, duration: 1.05, stagger: .05 }, .42)
+  .to('#hs',   { opacity: 1, y: 0, duration: .9 },  .95)
+  .to('#sh',   { opacity: 1, y: 0, duration: .7 },  1.38);
+
+/* ══════════════════════════════════════════════════
+   SCROLL FADE-UP (all .fu elements)
+══════════════════════════════════════════════════ */
+document.querySelectorAll('.fu').forEach(el => {
+  gsap.fromTo(el,
+    { opacity: 0, y: 55 },
+    {
+      opacity: 1, y: 0, duration: 1, ease: 'power3.out',
+      scrollTrigger: {
+        trigger: el,
+        start: 'top 88%',
+        toggleActions: 'play none none none',
+      }
+    }
+  );
+});
+
+/* ══════════════════════════════════════════════════
+   VIDEO PARALLAX
+══════════════════════════════════════════════════ */
+document.querySelectorAll('.vid, .vid-local').forEach(el => {
+  gsap.fromTo(el,
+    { y: 28 },
+    {
+      y: -28, ease: 'none',
+      scrollTrigger: {
+        trigger: el,
+        start: 'top bottom',
+        end:   'bottom top',
+        scrub: 1.6,
+      }
+    }
+  );
+});
+
+/* ══════════════════════════════════════════════════
+   TIMELINE — progress line & dots
+══════════════════════════════════════════════════ */
+const tlWrap = document.getElementById('tl-wrap');
+const tlProg = document.getElementById('tl-prog');
+
+if (tlWrap && tlProg) {
+  gsap.to(tlProg, {
+    height: '100%', ease: 'none',
+    scrollTrigger: {
+      trigger: tlWrap,
+      start: 'top 65%',
+      end:   'bottom 35%',
+      scrub: 1.2,
+    }
+  });
+}
+
+document.querySelectorAll('.tl-dot').forEach(d => {
+  gsap.to(d, {
+    opacity: 1, scale: 1, duration: .6, ease: 'back.out(1.8)',
+    scrollTrigger: {
+      trigger: d,
+      start: 'top 82%',
+      toggleActions: 'play none none none',
+    }
+  });
+});
+
+/* ══════════════════════════════════════════════════
+   FOOTER HEADING
+══════════════════════════════════════════════════ */
+gsap.from('#footer-h', {
+  opacity: 0, y: 85, duration: 1.3, ease: 'power4.out',
+  scrollTrigger: { trigger: '#footer-h', start: 'top 80%' }
+});
+
+/* ══════════════════════════════════════════════════
+   HAMBURGER MENU
+══════════════════════════════════════════════════ */
+(function () {
+  const btn      = document.getElementById('hamburger');
+  const menu     = document.getElementById('mobile-menu');
+  const mobLinks = menu.querySelectorAll('.mob-nav a');
+  const lines    = btn.querySelectorAll('.ham-line');
+  let isOpen     = false;
+
+  function openMenu() {
+    isOpen = true;
+    menu.classList.add('open');
+    menu.setAttribute('aria-hidden', 'false');
+    btn.setAttribute('aria-expanded', 'true');
+    // animate lines → ✕
+    gsap.to(lines[0], { rotation: 45,  y:  6.5, duration: .35, ease: 'power3.out' });
+    gsap.to(lines[1], { opacity: 0,            duration: .2 });
+    gsap.to(lines[2], { rotation: -45, y: -6.5, duration: .35, ease: 'power3.out' });
+    // fade in overlay
+    gsap.to(menu, { opacity: 1, duration: .4, ease: 'power2.out' });
+    // stagger links
+    gsap.fromTo(mobLinks,
+      { opacity: 0, y: 28 },
+      { opacity: 1, y: 0, duration: .55, stagger: .08, ease: 'power3.out', delay: .1 }
+    );
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMenu() {
+    isOpen = false;
+    btn.setAttribute('aria-expanded', 'false');
+    // animate lines back
+    gsap.to(lines[0], { rotation: 0, y: 0, duration: .3, ease: 'power2.out' });
+    gsap.to(lines[1], { opacity: 1,        duration: .3 });
+    gsap.to(lines[2], { rotation: 0, y: 0, duration: .3, ease: 'power2.out' });
+    // fade out overlay
+    gsap.to(menu, {
+      opacity: 0, duration: .35, ease: 'power2.in',
+      onComplete: () => {
+        menu.classList.remove('open');
+        menu.setAttribute('aria-hidden', 'true');
+      }
+    });
+    document.body.style.overflow = '';
+  }
+
+  btn.addEventListener('click', () => isOpen ? closeMenu() : openMenu());
+
+  // close when a link is clicked and scroll to target
+  mobLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      const target = document.querySelector(link.getAttribute('href'));
+      closeMenu();
+      if (target) {
+        e.preventDefault();
+        setTimeout(() => lenis.scrollTo(target, { offset: -70 }), 380);
+      }
+    });
+  });
+
+  // close on Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && isOpen) closeMenu();
+  });
+})();
+</script>
+
+</body>
+</html>
