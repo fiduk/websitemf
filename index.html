@@ -2,12 +2,12 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Мария Флоренская — Продюсер · ГИТР</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet" />
 
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -48,7 +48,10 @@
     }
 
     @media (max-width: 1024px) {
-      html, body { overscroll-behavior-y: none; }
+      html, body {
+        overscroll-behavior-y: none;
+        -webkit-overflow-scrolling: touch;
+      }
     }
 
     /* ═══════════════════════════════════════════════
@@ -83,6 +86,7 @@
       z-index: 100;
       display: flex; justify-content: space-between; align-items: center;
       padding: 1.75rem 5vw;
+      padding-top: max(1.75rem, env(safe-area-inset-top));
       transition: background .4s, backdrop-filter .4s;
     }
     #nav.bg {
@@ -158,8 +162,10 @@
     }
     @media (max-width: 768px) {
       .hero-sticker {
-        top: auto; bottom: 18vh; right: 5vw;
-        width: clamp(320px, 88vw, 480px);
+        top: 1.5rem; bottom: auto;
+        right: -2vw; left: auto;
+        width: clamp(240px, 70vw, 360px);
+        max-width: 85vw;
       }
     }
 
@@ -227,6 +233,18 @@
        PROJECTS
     ═══════════════════════════════════════════════ */
     .proj-list { display: flex; flex-direction: column; gap: 7rem; }
+    .proj-subsec {
+      font-size: .65rem; letter-spacing: .25em; text-transform: uppercase;
+      color: var(--t25); margin-top: 4.5rem; margin-bottom: 1rem;
+    }
+    .proj-subsec:first-child { margin-top: 0; }
+    .proj-media-split { grid-template-columns: 3fr 2fr; }
+    .proj-media-stack { display: flex; flex-direction: column; gap: 1.5rem; }
+    .proj-media-stack .proj-photos { aspect-ratio: 16/10; min-height: 280px; }
+    @media (max-width: 768px) {
+      .proj-media-split { grid-template-columns: 1fr; }
+      .proj-media-stack .proj-photos { min-height: 220px; aspect-ratio: 4/3; }
+    }
 
     .proj-row {
       display: grid;
@@ -392,7 +410,9 @@
       min-height: 100dvh;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      text-align: center; padding: 8vh 5vw;
+      text-align: center;
+      padding: 8vh 5vw;
+      padding-bottom: max(2rem, env(safe-area-inset-bottom));
       position: relative; overflow: hidden;
       border-top: 1px solid var(--t05);
     }
@@ -404,13 +424,13 @@
       pointer-events: none;
     }
     .footer-h {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.4rem, 7vw, 7.5rem);
-      font-weight: 900; line-height: .96;
-      letter-spacing: -.025em; color: var(--text);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.6rem, 7.5vw, 8.2rem);
+      font-weight: 700; line-height: .93;
+      letter-spacing: -.01em; color: var(--text);
       margin-bottom: 2rem; position: relative; z-index: 1;
     }
-    .footer-h em { font-style: italic; color: var(--gold); }
+    .footer-h em { font-style: italic; color: var(--gold); font-weight: 600; }
     .footer-sub {
       font-size: .66rem; letter-spacing: .25em;
       text-transform: uppercase; color: var(--t25);
@@ -499,13 +519,13 @@
        RESPONSIVE — MOBILE (≤ 768px)
     ═══════════════════════════════════════════════ */
     @media (max-width: 768px) {
-      /* Nav */
-      #nav { padding: 1.1rem 5vw; }
+      /* Nav — боковые отступы */
+      #nav { padding: 1.1rem max(1rem, 5vw); }
       .nav-links { display: none; }
       #hamburger { display: flex; }
 
-      /* Hero */
-      #hero { padding: 0 6vw 10vh; }
+      /* Hero — достаточные боковые отступы */
+      #hero { padding: 0 max(1rem, 6vw) 10vh; }
       .hero-side { display: none; }
       .hero-eyebrow {
         font-size: .58rem;
@@ -516,14 +536,17 @@
         font-size: clamp(2.4rem, 11vw, 5rem);
         margin-bottom: 1.2rem;
       }
+      #hero-title .title-line {
+        display: block !important;
+      }
       .hero-sub {
         font-size: clamp(.85rem, 3.8vw, 1.05rem);
         line-height: 1.65; letter-spacing: .03em;
       }
-      .scroll-hint { bottom: 2.5vh; }
+      .scroll-hint { display: none; }
 
-      /* Sections */
-      section { padding: 7vh 6vw; }
+      /* Sections — px-6 эквивалент, контент не прилипает к краям */
+      section { padding: 7vh max(1rem, 6vw); }
       .s-hdr { margin-bottom: 2.8rem; }
       .s-hdr-center { margin-bottom: 3rem; }
       .s-title { font-size: clamp(1.8rem, 7vw, 2.8rem); }
@@ -559,8 +582,8 @@
       .tl-card:not(.ghost) { flex: 1; }
       .tl-card { padding: 1.2rem; }
 
-      /* Footer */
-      #footer { min-height: 80dvh; padding: 10vh 6vw; }
+      /* Footer — dvh для стабильной высоты при скрытии адресной строки */
+      #footer { min-height: 80dvh; padding: 10vh max(1rem, 6vw); }
       .footer-h {
         font-size: clamp(2rem, 10.5vw, 3.2rem);
         margin-bottom: 1.5rem;
@@ -573,6 +596,10 @@
        RESPONSIVE — SMALL PHONES (≤ 430px)
     ═══════════════════════════════════════════════ */
     @media (max-width: 430px) {
+      #hero { padding-left: 1rem; padding-right: 1rem; }
+      section { padding-left: 1rem; padding-right: 1rem; }
+      #footer { padding-left: 1rem; padding-right: 1rem; }
+      #nav { padding-left: 1rem; padding-right: 1rem; }
       #hero-title { font-size: clamp(3.6rem, 21vw, 6rem); }
       .proj-h { font-size: clamp(1.3rem, 5.5vw, 1.7rem); }
       .s-card-body { padding: 1.2rem; }
@@ -655,6 +682,8 @@
 
   <div class="proj-list">
 
+    <p class="proj-subsec fu">Большие работы</p>
+
     <!-- ── Проект 1: Короткий метр с Гилёвым (Дзен) ── -->
     <div class="proj-row v-l fu">
       <div class="vid" data-hover="PLAY">
@@ -718,51 +747,34 @@
       </div>
     </div>
 
-    <!-- ── Проекты 3 & 4: пара ── -->
-    <div class="proj-row pair">
-
-      <!-- Memento Mori -->
-      <div class="s-card fu">
-        <div class="s-card-thumb" style="background:#000;">
-          <!-- photo collage: 1 large left + 2x2 right -->
+    <!-- Memento Mori (большая работа) -->
+    <div class="proj-row v-r fu">
+      <div>
+        <div class="roles"><span class="role-tag">Продюсер</span></div>
+        <h3 class="proj-h">«Memento Mori»</h3>
+        <p class="proj-p">Студенческий короткий метр. Полный производственный цикл — от идеи до финального кадра.</p>
+        <div style="margin-top:1.4rem;"><span style="font-size:.6rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--t25);">SHORT · ГИТР · 2025</span></div>
+      </div>
+      <div class="proj-media-stack">
+        <div class="proj-photos rounded-xl overflow-hidden shadow-lg" style="background:#000;position:relative;">
           <div style="position:absolute;inset:0;display:grid;grid-template-columns:3fr 2fr;grid-template-rows:1fr 1fr;gap:2px;">
-            <img src="memento%20mori/IMG_8083.JPG"                  alt="" style="grid-row:1/3;width:100%;height:100%;object-fit:cover;display:block;">
-            <img src="memento%20mori/IMG_8093.JPG"                  alt="" style="width:100%;height:100%;object-fit:cover;display:block;">
+            <img src="memento%20mori/IMG_8083.JPG" alt="" style="grid-row:1/3;width:100%;height:100%;object-fit:cover;display:block;">
+            <img src="memento%20mori/IMG_8093.JPG" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">
             <img src="memento%20mori/photo_2025-05-31_19-19-47.jpg" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">
           </div>
-          <!-- dark overlay + italic title overlay -->
           <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,.82) 0%,rgba(8,8,8,.15) 55%,rgba(8,8,8,.35) 100%);pointer-events:none" aria-hidden="true"></div>
-          <div style="position:absolute;bottom:1rem;left:1.2rem;z-index:2;font-family:'Playfair Display',serif;font-size:clamp(1.2rem,3vw,2rem);font-weight:900;font-style:italic;color:rgba(201,168,76,.55);line-height:1;letter-spacing:-.01em;pointer-events:none" aria-hidden="true">Memento Mori</div>
         </div>
-        <div class="s-card-body">
-          <div class="roles"><span class="role-tag">Продюсер</span></div>
-          <h3 class="s-card-h">"Memento Mori"</h3>
-          <p class="s-card-p">Студенческий короткий метр. Полный производственный цикл — от идеи до финального кадра.</p>
-        </div>
+        <iframe
+          src="https://rutube.ru/play/embed/89649c77461b529e1cea65f8c7ab6df6/?p=VaatljBCJlqVPIJdpp6Pjg"
+          class="w-full aspect-video rounded-xl shadow-lg"
+          frameborder="0"
+          allow="clipboard-write; autoplay; fullscreen; accelerometer; gyroscope; picture-in-picture; encrypted-media"
+          allowfullscreen
+        ></iframe>
       </div>
-
-      <!-- Бионические протезы -->
-      <div class="s-card fu" style="margin-top:3.5rem">
-        <div class="s-card-thumb" style="background:#000;">
-          <!-- photo collage: 1 large left + 2 stacked right -->
-          <div style="position:absolute;inset:0;display:grid;grid-template-columns:3fr 2fr;grid-template-rows:1fr 1fr;gap:2px;">
-            <img src="protez/IMG_8534.JPG" alt="" style="grid-row:1/3;width:100%;height:100%;object-fit:cover;display:block;">
-            <img src="protez/IMG_8568.JPG" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">
-            <img src="protez/IMG_8687.JPG" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">
-          </div>
-          <!-- dark overlay -->
-          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,.82) 0%,rgba(8,8,8,.1) 55%,rgba(8,8,8,.3) 100%);pointer-events:none" aria-hidden="true"></div>
-        </div>
-        <div class="s-card-body">
-          <div class="roles"><span class="role-tag">Продюсер</span></div>
-          <h3 class="s-card-h">Сюжет про<br>бионические протезы</h3>
-          <p class="s-card-p">Студенческая работа. Журналистский репортаж о передовых технологиях — продюсирование и организация съёмок.</p>
-        </div>
-      </div>
-
     </div>
 
-    <!-- ── Беспечность (локальное видео) ── -->
+    <!-- ── Беспечность (Rutube) ── -->
     <div class="proj-row v-r fu">
       <div>
         <p class="proj-num">Проект 04</p>
@@ -775,34 +787,24 @@
           <span style="font-size:.6rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--t25);">DOC · ГИТР · 2025</span>
         </div>
       </div>
-      <div class="vid-local" data-hover="PLAY">
-        <video
-          controls
-          preload="metadata"
-          playsinline
-          title="Беспечность — документальный фильм, 2025"
-        >
-          <source src="videos/DS21_Ivanov_Michael_Bespechnost_DOC_2025.mov" type="video/mp4">
-          <source src="videos/DS21_Ivanov_Michael_Bespechnost_DOC_2025.mov" type="video/quicktime">
-          Ваш браузер не поддерживает воспроизведение видео.
-        </video>
-      </div>
+      <iframe
+        src="https://rutube.ru/play/embed/ff594dcd36c2f9575e0b82d56d68795b/?p=5Ou6xjkHoBtrBwZdha53ng"
+        class="w-full aspect-video rounded-xl shadow-lg"
+        frameborder="0"
+        allow="clipboard-write; autoplay; fullscreen; accelerometer; gyroscope; picture-in-picture; encrypted-media"
+        allowfullscreen
+      ></iframe>
     </div>
 
-    <!-- ── Состояние аффекта (локальное видео) ── -->
+    <!-- ── Состояние аффекта (Rutube) ── -->
     <div class="proj-row v-l fu">
-      <div class="vid-local" data-hover="PLAY">
-        <video
-          controls
-          preload="metadata"
-          playsinline
-          title="Состояние аффекта — интервью, 2025"
-        >
-          <source src="videos/DO12_Soshnikov_Nikolay_INT_Sostouanye_affeckta_2025.mov" type="video/mp4">
-          <source src="videos/DO12_Soshnikov_Nikolay_INT_Sostouanye_affeckta_2025.mov" type="video/quicktime">
-          Ваш браузер не поддерживает воспроизведение видео.
-        </video>
-      </div>
+      <iframe
+        src="https://rutube.ru/play/embed/118dd704d0118d5456bc33c94c49fcd5/?p=YBQBNwWBfI67lFGjUErpQg"
+        class="w-full aspect-video rounded-xl shadow-lg"
+        frameborder="0"
+        allow="clipboard-write; autoplay; fullscreen; accelerometer; gyroscope; picture-in-picture; encrypted-media"
+        allowfullscreen
+      ></iframe>
       <div>
         <p class="proj-num">Проект 05</p>
         <div class="roles">
@@ -816,7 +818,7 @@
       </div>
     </div>
 
-    <!-- ── Проект 5: VK Видео ── -->
+    <!-- ── Клип Бабушки (VK Видео) ── -->
     <div class="proj-row v-l fu">
       <div class="vid" data-hover="PLAY">
         <iframe
@@ -834,6 +836,91 @@
         </div>
         <h3 class="proj-h">Клип «Бабушки»<br>— Андрей Минеев</h3>
         <p class="proj-p">Музыкальный клип на песню «Бабушки» Андрея Минеева. Участие в производстве в роли хелпера.</p>
+      </div>
+    </div>
+
+    <p class="proj-subsec fu">Режиссёрские работы</p>
+
+    <!-- ── Этюд «Гадали» ── -->
+    <div class="proj-row v-r fu">
+      <div>
+        <div class="roles"><span class="role-tag">Продюсер</span></div>
+        <h3 class="proj-h">Этюд «Гадали»</h3>
+        <p class="proj-p">Студенческий этюд. Мария Флоренская — продюсер.</p>
+        <div style="margin-top:1.4rem;display:flex;align-items:center;gap:.75rem;">
+          <span style="font-size:.6rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--t25);">ЭТЮД · ГИТР · 2025</span>
+        </div>
+      </div>
+      <iframe
+        src="https://rutube.ru/play/embed/73f7bd2f12b67180d3de58f7292d9048/?p=LRac-vEytPl4vKz7w7ZeIA"
+        class="w-full aspect-video rounded-xl shadow-lg"
+        frameborder="0"
+        allow="clipboard-write; autoplay; fullscreen; accelerometer; gyroscope; picture-in-picture; encrypted-media"
+        allowfullscreen
+      ></iframe>
+    </div>
+
+    <p class="proj-subsec fu">Журналистские работы</p>
+
+    <!-- ── Бионические протезы ── -->
+    <div class="proj-row v-l fu">
+      <div class="proj-media-stack">
+        <div class="proj-photos rounded-xl overflow-hidden shadow-lg" style="background:#000;position:relative;">
+          <div style="position:absolute;inset:0;display:grid;grid-template-columns:3fr 2fr;grid-template-rows:1fr 1fr;gap:2px;">
+            <img src="protez/IMG_8534.JPG" alt="" style="grid-row:1/3;width:100%;height:100%;object-fit:cover;display:block;">
+            <img src="protez/IMG_8568.JPG" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">
+            <img src="protez/IMG_8687.JPG" alt="" style="width:100%;height:100%;object-fit:cover;display:block;">
+          </div>
+          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,.82) 0%,rgba(8,8,8,.1) 55%,rgba(8,8,8,.3) 100%);pointer-events:none" aria-hidden="true"></div>
+        </div>
+        <div class="vid-placeholder w-full aspect-video rounded-xl shadow-lg" style="background:linear-gradient(135deg,rgba(20,18,15,.9) 0%,rgba(12,11,10,.95) 100%);display:flex;align-items:center;justify-content:center;border:1px solid rgba(201,168,76,.12);" aria-label="Видео">
+          <span style="font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--t25);">Добавьте ссылку на видео</span>
+        </div>
+      </div>
+      <div>
+        <div class="roles"><span class="role-tag">Продюсер</span></div>
+        <h3 class="proj-h">Сюжет про<br>бионические протезы</h3>
+        <p class="proj-p">Журналистский репортаж о передовых технологиях. Продюсирование и организация съёмок.</p>
+        <div style="margin-top:1.4rem;"><span style="font-size:.6rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--t25);">REPORT · ГИТР · 2025</span></div>
+      </div>
+    </div>
+
+    <!-- ── Воробьёвы горы ── -->
+    <div class="proj-row v-r fu">
+      <div>
+        <div class="roles"><span class="role-tag">Продюсер</span></div>
+        <h3 class="proj-h">Новостное интервью<br>«Воробьёвы горы»</h3>
+        <p class="proj-p">Журналистская работа. Новостное интервью — продюсирование и организация съёмок.</p>
+        <div style="margin-top:1.4rem;"><span style="font-size:.6rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--t25);">NEWS · ГИТР · 2025</span></div>
+      </div>
+      <div class="vid-placeholder w-full aspect-video rounded-xl shadow-lg" style="background:linear-gradient(135deg,rgba(20,18,15,.9) 0%,rgba(12,11,10,.95) 100%);display:flex;align-items:center;justify-content:center;border:1px solid rgba(201,168,76,.12);" aria-label="Видео">
+        <span style="font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--t25);">Добавьте ссылку на видео</span>
+      </div>
+    </div>
+
+    <!-- ── Интервью с ветеринаром ── -->
+    <div class="proj-row v-l fu">
+      <div class="vid-placeholder w-full aspect-video rounded-xl shadow-lg" style="background:linear-gradient(135deg,rgba(20,18,15,.9) 0%,rgba(12,11,10,.95) 100%);display:flex;align-items:center;justify-content:center;border:1px solid rgba(201,168,76,.12);" aria-label="Видео">
+        <span style="font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--t25);">Добавьте ссылку на видео</span>
+      </div>
+      <div>
+        <div class="roles"><span class="role-tag">Продюсер</span></div>
+        <h3 class="proj-h">Интервью<br>с ветеринаром</h3>
+        <p class="proj-p">Журналистская работа — интервью. Продюсирование и организация съёмок.</p>
+        <div style="margin-top:1.4rem;"><span style="font-size:.6rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--t25);">INT · ГИТР · 2025</span></div>
+      </div>
+    </div>
+
+    <!-- ── Точный выстрел ── -->
+    <div class="proj-row v-r fu">
+      <div>
+        <div class="roles"><span class="role-tag">Продюсер</span></div>
+        <h3 class="proj-h">Репортаж<br>«Точный выстрел»</h3>
+        <p class="proj-p">Журналистский репортаж. Продюсирование и организация съёмок.</p>
+        <div style="margin-top:1.4rem;"><span style="font-size:.6rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--t25);">REPORT · ГИТР · 2025</span></div>
+      </div>
+      <div class="vid-placeholder w-full aspect-video rounded-xl shadow-lg" style="background:linear-gradient(135deg,rgba(20,18,15,.9) 0%,rgba(12,11,10,.95) 100%);display:flex;align-items:center;justify-content:center;border:1px solid rgba(201,168,76,.12);" aria-label="Видео">
+        <span style="font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--t25);">Добавьте ссылку на видео</span>
       </div>
     </div>
 
@@ -875,7 +962,7 @@
         <div class="tl-card fu">
           <p class="tl-year">2025</p>
           <h3 class="tl-name">La Boheme Cinema</h3>
-          <p class="tl-desc">Международный кинофестиваль. Организационный комитет — координация мероприятий, взаимодействие с участниками и международными гостями фестиваля.</p>
+          <p class="tl-desc">Международный кинофестиваль. Организационный комитет — координация мероприятий, взаимодействие с участниками фестиваля.</p>
         </div>
       </div>
 
@@ -901,10 +988,6 @@
 <footer id="footer" aria-label="Контакты">
 
   <div class="footer-glow" aria-hidden="true"></div>
-
-  <h2 class="footer-h" id="footer-h">
-    Let's create<br><em>something</em><br>together.
-  </h2>
 
   <p class="footer-sub">Открыта для новых проектов</p>
 
@@ -934,7 +1017,7 @@
 ══════════════════════════════════════════════════ */
 gsap.registerPlugin(ScrollTrigger);
 
-/* ── Lenis: только на десктопе (≥1024px и не тач-устройство) ── */
+    /* ── Lenis: ТОЛЬКО десктоп (≥1024px И не touch). На мобилках — нативный скролл ── */
 const IS_DESKTOP = window.innerWidth >= 1024 && !('ontouchstart' in window);
 let lenis = null;
 
@@ -950,9 +1033,11 @@ if (IS_DESKTOP) {
   });
   gsap.ticker.lagSmoothing(0, 0);
 } else {
-  /* на мобилках ScrollTrigger слушает нативный скролл */
+  /* на мобилках — нативный скролл, ScrollTrigger без Lenis */
   ScrollTrigger.normalizeScroll(false);
   window.addEventListener('scroll', ScrollTrigger.update, { passive: true });
+  /* снижаем частоту обновления на touch-устройствах для плавности */
+  ScrollTrigger.config({ limitCallbacks: true, ignoreMobileResize: true });
 }
 
 /* ── Nav scroll class ── */
